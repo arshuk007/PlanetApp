@@ -1,9 +1,12 @@
 package com.myapp.planetapp.di
 
-import android.content.Context
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.test.planetapp.network.ApiInterface
+import com.test.planetapp.network.ResponseHandler
+import com.test.planetapp.repository.HomeRepository
+import com.test.planetapp.usecase.HomeUsecase
+import com.test.planetapp.viewmodel.HomeViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.BuildConfig
@@ -11,21 +14,34 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import org.koin.androidx.viewmodel.dsl.viewModel
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 
 val appModule  = module{
 
+    //ViewModel dependency
+    viewModel {HomeViewModel(get())}
+
+    //Usecase dependency
+    factory { HomeUsecase(get(), get()) }
+
+    //Repository dependency
+    single { HomeRepository(get()) }
 
     //Network dependency
-    factory { provideRetrofit(get(), "") }
     factory { provideHttpClient(get()) }
-    factory { provideLoggingInterceptor(get()) }
     factory { provideApiInterface(get()) }
+    factory { provideLoggingInterceptor() }
+    factory { ResponseHandler() }
+    single { provideRetrofit(get(), "https://swapi.dev/api/") }
 
 }
 
 private fun provideRetrofit(okHttpClient: OkHttpClient, appUrl: String): Retrofit{
     return Retrofit.Builder().baseUrl(appUrl).client(okHttpClient)
-        .addConverterFactory(provideGsonConverterFactory()).build()
+        .addConverterFactory(provideGsonConverterFactory())
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .build()
 }
 
 private fun provideHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient{
@@ -36,7 +52,7 @@ private fun provideHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHtt
         .build()
 }
 
-private fun provideLoggingInterceptor(context: Context): HttpLoggingInterceptor{
+private fun provideLoggingInterceptor(): HttpLoggingInterceptor{
     val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger{
         override fun log(message: String) {
             if(BuildConfig.DEBUG){

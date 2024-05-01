@@ -47,6 +47,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    dataBinding{
+        enable = true
+    }
 }
 
 dependencies {
@@ -67,7 +71,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.viewmodel)
+
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -75,6 +80,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation("com.squareup.retrofit2:adapter-rxjava:2.0.0")
     implementation(libs.androidx.room.runtime)
 
 
