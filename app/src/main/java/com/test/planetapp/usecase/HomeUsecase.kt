@@ -26,4 +26,21 @@ class HomeUsecase(private val responseHandler: ResponseHandler,
 
     }
 
+    suspend fun getPlanetListForNextPage(url: String?): Resource<PlanetListResponse>{
+
+        return try {
+            when(val response = repository.getPlanetListForNextPage(url)){
+                is Response.Success -> {
+                    responseHandler.handleSuccess(response.data)
+                }
+                is Response.Failure -> {
+                    responseHandler.handleFail(response.message)
+                }
+            }
+        }catch (e: Exception){
+            responseHandler.handleFail(e.localizedMessage ?:"")
+        }
+
+    }
+
 }

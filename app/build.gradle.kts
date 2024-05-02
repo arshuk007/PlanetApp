@@ -64,10 +64,15 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.android)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation("androidx.test:runner:1.4.0")
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
@@ -80,7 +85,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
-    implementation("com.squareup.retrofit2:adapter-rxjava:2.0.0")
+    implementation(libs.adapter.rxjava)
     implementation(libs.androidx.room.runtime)
 
 

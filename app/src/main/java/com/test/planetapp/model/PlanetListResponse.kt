@@ -66,6 +66,6 @@ data class Planet(
     val residents: List<String>?,
 
     @SerializedName("films")
-    val films: List<String>
+    val films: List<String>?
 
 )

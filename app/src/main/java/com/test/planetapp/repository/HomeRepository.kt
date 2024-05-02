@@ -16,4 +16,15 @@ class HomeRepository(private val apiInterface: ApiInterface) {
             }
         }
     }
+
+    suspend fun getPlanetListForNextPage(url: String?): Response<PlanetListResponse>{
+        val result = apiInterface.getPlanetListForNextPage(url)
+        return with(result) {
+            if (this.planets.isNullOrEmpty()) {
+                Response.Failure(this.detail ?: "no data found")
+            } else {
+                Response.Success(this)
+            }
+        }
+    }
 }

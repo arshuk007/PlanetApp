@@ -13,4 +13,8 @@ class HomeViewModel(private val usecase: HomeUsecase): ViewModel() {
         emit(usecase.getPlanetList())
     }
 
+    fun getPlanetListForNextPage(url: String?): LiveData<Resource<PlanetListResponse>> = liveData {
+        emit(usecase.getPlanetListForNextPage(url))
+    }
+
 }
