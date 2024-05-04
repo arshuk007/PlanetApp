@@ -2,7 +2,7 @@ package com.test.planetapp.network
 
 open class ResponseHandler {
 
-    fun <T: Any> handleSuccess(data: T): Resource<T> {
+    fun <T: Any> handleSuccess(data: T?): Resource<T> {
         return Resource.success(data)
     }
 

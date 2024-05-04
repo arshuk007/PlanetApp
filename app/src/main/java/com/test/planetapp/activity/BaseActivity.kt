@@ -11,6 +11,7 @@ open class BaseActivity: FragmentActivity() {
         transaction.add(R.id.container, fragment)
         transaction.addToBackStack(tag)
         transaction.commit()
+        supportFragmentManager.executePendingTransactions()
     }
 
 }

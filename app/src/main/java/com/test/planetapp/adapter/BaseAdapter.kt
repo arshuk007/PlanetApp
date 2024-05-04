@@ -65,7 +65,7 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder?>()
 
     fun add(item: T) {
         items.add(item)
-        notifyItemInserted(items.size - 1)
+        notifyDataSetChanged()
     }
 
     fun add(item: T, position: Int) {

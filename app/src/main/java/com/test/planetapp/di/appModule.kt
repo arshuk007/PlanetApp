@@ -5,8 +5,11 @@ import com.google.gson.GsonBuilder
 import com.test.planetapp.network.ApiInterface
 import com.test.planetapp.network.ResponseHandler
 import com.test.planetapp.repository.HomeRepository
+import com.test.planetapp.repository.PlanetDetailsRepository
 import com.test.planetapp.usecase.HomeUsecase
+import com.test.planetapp.usecase.PlanetDetailsUsecase
 import com.test.planetapp.viewmodel.HomeViewModel
+import com.test.planetapp.viewmodel.PlanetDetailsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.BuildConfig
@@ -21,12 +24,15 @@ val appModule  = module{
 
     //ViewModel dependency
     viewModel {HomeViewModel(get())}
+    viewModel {PlanetDetailsViewModel(get())}
 
     //Usecase dependency
     factory { HomeUsecase(get(), get()) }
+    factory { PlanetDetailsUsecase(get(), get()) }
 
     //Repository dependency
     single { HomeRepository(get()) }
+    single { PlanetDetailsRepository(get()) }
 
     //Network dependency
     factory { provideHttpClient(get()) }

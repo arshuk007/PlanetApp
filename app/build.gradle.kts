@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-parcelize")
 }
+
 
 android {
     namespace = "com.test.planetapp"
@@ -67,12 +69,13 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.android)
     testImplementation(libs.mockito.kotlin)
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test:runner:1.5.2")
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

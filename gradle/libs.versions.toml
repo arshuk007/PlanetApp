@@ -53,4 +53,5 @@ mockito-kotlin = { module = "com.nhaarman.mockitokotlin2:mockito-kotlin", versio
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-parcelize = { id = "kotlin-parcelize"}
 

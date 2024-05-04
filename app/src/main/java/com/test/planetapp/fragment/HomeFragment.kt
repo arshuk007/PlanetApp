@@ -129,7 +129,7 @@ class HomeFragment: BaseFragment() {
             adapter = PlanetListAdapter(requireContext())
             adapter?.setOnMyItemClickListener(object: BaseAdapter.OnMyItemClickListener {
                 override fun onItemClick(position: Int, view: View) {
-
+                    parentActivity.addFragment(PlanetDetailsFragment.newInstance(planets?.get(position)), PlanetDetailsFragment::class.java.simpleName)
                 }
             })
             layoutManager = LinearLayoutManager(requireContext())

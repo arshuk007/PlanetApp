@@ -7,4 +7,6 @@
     <string name="diameter">Diameter</string>
     <string name="population">Population</string>
     <string name="terrain">Terrain</string>
+    <string name="residents">Residents</string>
+    <string name="films">Films</string>
 </resources>

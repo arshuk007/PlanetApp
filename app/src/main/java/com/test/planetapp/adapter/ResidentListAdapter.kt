@@ -7,11 +7,11 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.test.planetapp.R
-import com.test.planetapp.databinding.ItemPlanetBinding
-import com.test.planetapp.databinding.ItemProgressbarBinding
-import com.test.planetapp.model.Planet
+import com.test.planetapp.databinding.ItemResidentBinding
+import com.test.planetapp.databinding.ItemProgressbarForHorizontalBinding
+import com.test.planetapp.model.ResidentResponse
 
-class PlanetListAdapter(private val context: Context) : BaseAdapter<Planet>() {
+class ResidentListAdapter(private val context: Context) : BaseAdapter<ResidentResponse>() {
 
     private var footerViewHolder: FooterViewHolder? = null
     private var footerLayoutInflater: LayoutInflater? = null
@@ -30,8 +30,8 @@ class PlanetListAdapter(private val context: Context) : BaseAdapter<Planet>() {
         if(dataLayoutInflater == null){
             dataLayoutInflater = LayoutInflater.from(parent?.context)
         }
-        val binding = DataBindingUtil.inflate<ItemPlanetBinding>(dataLayoutInflater!!,
-            R.layout.item_planet, parent, false)
+        val binding = DataBindingUtil.inflate<ItemResidentBinding>(dataLayoutInflater!!,
+            R.layout.item_resident, parent, false)
 
         return DataViewHolder(binding)
     }
@@ -46,8 +46,8 @@ class PlanetListAdapter(private val context: Context) : BaseAdapter<Planet>() {
         if(footerLayoutInflater == null){
             footerLayoutInflater = LayoutInflater.from(parent?.context)
         }
-        val binding = DataBindingUtil.inflate<ItemProgressbarBinding>(footerLayoutInflater!!,
-            R.layout.item_progressbar, parent, false)
+        val binding = DataBindingUtil.inflate<ItemProgressbarForHorizontalBinding>(footerLayoutInflater!!,
+            R.layout.item_progressbar_for_horizontal, parent, false)
         return FooterViewHolder(binding)
     }
 
@@ -59,14 +59,10 @@ class PlanetListAdapter(private val context: Context) : BaseAdapter<Planet>() {
         item.let { setViews(holder, it, position) }
     }
 
-    private fun setViews(holder: DataViewHolder?, planet: Planet, position: Int) {
+    private fun setViews(holder: DataViewHolder?, resident: ResidentResponse, position: Int) {
 
-        holder?.binding?.txtName?.text = planet.name
-        holder?.binding?.txtRotationPeriod?.text = planet.rotationPeriod
-        holder?.binding?.txtOrbitalPeriod?.text = planet.orbitalPeriod
-        holder?.binding?.txtDiameter?.text = planet.diameter
-        holder?.binding?.txtTerrain?.text = planet.terrain
-        holder?.binding?.txtPopulation?.text = planet.population
+        holder?.binding?.txtName?.text = resident.name
+        holder?.binding?.txtGender?.text = resident.gender
 
         holder?.binding?.root?.setOnClickListener {
             onItemClickListener?.onItemClick(position, it)
@@ -89,13 +85,11 @@ class PlanetListAdapter(private val context: Context) : BaseAdapter<Planet>() {
 
     override fun addFooter() {
         isFooterAdded = true
-        add(Planet("", "","",
-            "","","","",
-            "","","", "",
-            "",null,null))
+        add(ResidentResponse("", "",""))
+        notifyDataSetChanged()
     }
 
-    inner class DataViewHolder(val binding: ItemPlanetBinding) : RecyclerView.ViewHolder(binding.root),
+    inner class DataViewHolder(val binding: ItemResidentBinding) : RecyclerView.ViewHolder(binding.root),
         View.OnClickListener{
 
         override fun onClick(v: View) {
@@ -107,5 +101,5 @@ class PlanetListAdapter(private val context: Context) : BaseAdapter<Planet>() {
         }
     }
 
-    class FooterViewHolder(val footerBinding: ItemProgressbarBinding) : RecyclerView.ViewHolder(footerBinding.root)
+    class FooterViewHolder(val footerBinding: ItemProgressbarForHorizontalBinding) : RecyclerView.ViewHolder(footerBinding.root)
 }

@@ -14,11 +14,20 @@
             android:orientation="horizontal"
             android:id="@+id/ll_toolbar">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/app_name"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
         </LinearLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:id="@+id/container"
            />
 
