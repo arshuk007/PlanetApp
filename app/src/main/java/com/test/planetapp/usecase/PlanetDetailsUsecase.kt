@@ -1,5 +1,6 @@
 package com.test.planetapp.usecase
 
+import com.test.planetapp.model.FilmResponse
 import com.test.planetapp.model.PlanetListResponse
 import com.test.planetapp.model.ResidentResponse
 import com.test.planetapp.network.Resource
@@ -27,10 +28,10 @@ class PlanetDetailsUsecase(private val responseHandler: ResponseHandler,
 
     }
 
-    suspend fun getPlanetListForNextPage(url: String?): Resource<PlanetListResponse>{
+    suspend fun getFilmDetails(url: String?): Resource<FilmResponse?>{
 
         return try {
-            when(val response = repository.getPlanetListForNextPage(url)){
+            when(val response = repository.getFilmDetails(url)){
                 is Response.Success -> {
                     responseHandler.handleSuccess(response.data)
                 }

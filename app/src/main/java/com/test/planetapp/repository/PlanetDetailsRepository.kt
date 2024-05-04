@@ -1,5 +1,6 @@
 package com.test.planetapp.repository
 
+import com.test.planetapp.model.FilmResponse
 import com.test.planetapp.model.PlanetListResponse
 import com.test.planetapp.model.ResidentResponse
 import com.test.planetapp.network.ApiInterface
@@ -18,13 +19,13 @@ class PlanetDetailsRepository(private val apiInterface: ApiInterface) {
         }
     }
 
-    suspend fun getPlanetListForNextPage(url: String?): Response<PlanetListResponse>{
-        val result = apiInterface.getPlanetListForNextPage(url)
+    suspend fun getFilmDetails(url: String?): Response<FilmResponse?>{
+        val result = apiInterface.getFilmDetails(url)
         return with(result) {
-            if (this.planets.isNullOrEmpty()) {
-                Response.Failure(this.detail ?: "no data found")
-            } else {
+            if (this != null ) {
                 Response.Success(this)
+            } else {
+                Response.Failure("no data found")
             }
         }
     }

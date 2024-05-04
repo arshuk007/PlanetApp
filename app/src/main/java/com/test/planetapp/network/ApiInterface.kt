@@ -1,5 +1,6 @@
 package com.test.planetapp.network
 
+import com.test.planetapp.model.FilmResponse
 import com.test.planetapp.model.PlanetListResponse
 import com.test.planetapp.model.ResidentResponse
 import retrofit2.http.GET
@@ -15,5 +16,8 @@ interface ApiInterface {
 
     @GET
     suspend fun getResidentDetails(@Url apiUrl: String?): ResidentResponse?
+
+    @GET
+    suspend fun getFilmDetails(@Url apiUrl: String?): FilmResponse?
 
 }

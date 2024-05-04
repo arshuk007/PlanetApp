@@ -3,6 +3,7 @@ package com.test.planetapp.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.test.planetapp.model.FilmResponse
 import com.test.planetapp.model.PlanetListResponse
 import com.test.planetapp.model.ResidentResponse
 import com.test.planetapp.network.Resource
@@ -14,8 +15,8 @@ class PlanetDetailsViewModel(private val usecase: PlanetDetailsUsecase): ViewMod
         emit(usecase.getResidentDetails(url))
     }
 
-    fun getPlanetListForNextPage(url: String?): LiveData<Resource<PlanetListResponse>> = liveData {
-        emit(usecase.getPlanetListForNextPage(url))
+    fun getFilmDetails(url: String?): LiveData<Resource<FilmResponse?>> = liveData {
+        emit(usecase.getFilmDetails(url))
     }
 
 }
