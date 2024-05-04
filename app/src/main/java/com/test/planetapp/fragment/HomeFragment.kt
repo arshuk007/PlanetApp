@@ -61,7 +61,9 @@ class HomeFragment: BaseFragment() {
      */
     fun getPlanetDetails(){
         if (CommonUtils.isNetworkAvailable(requireContext())){
+            parentActivity.showLoading()
             homeViewModel.getPlanetList().observe(viewLifecycleOwner, Observer {
+                parentActivity.dismissLoading()
                 when(it.status){
                     Status.SUCCESS -> {
                         handleSuccessForFirstPage(it.data)
