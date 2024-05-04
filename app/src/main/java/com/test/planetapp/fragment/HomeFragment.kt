@@ -1,6 +1,7 @@
 package com.test.planetapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeFragment: BaseFragment() {
 
     lateinit var binding : FragmentHomeBinding
-    val mViewModel: HomeViewModel by viewModel()
+    val homeViewModel: HomeViewModel by viewModel()
 
     var isLastPage = false
     var isLoading = false
@@ -60,7 +61,7 @@ class HomeFragment: BaseFragment() {
      */
     fun getPlanetDetails(){
         if (CommonUtils.isNetworkAvailable(requireContext())){
-            mViewModel.getPlanetList().observe(viewLifecycleOwner, Observer {
+            homeViewModel.getPlanetList().observe(viewLifecycleOwner, Observer {
                 when(it.status){
                     Status.SUCCESS -> {
                         handleSuccessForFirstPage(it.data)
@@ -72,6 +73,12 @@ class HomeFragment: BaseFragment() {
             })
         }else{
             getString(R.string.no_internet).showToast(requireContext())
+            homeViewModel.getPlanetsFromDB().observe(viewLifecycleOwner, Observer {
+                it?.let {
+                    setAdapter(it)
+                    isLastPage = true
+                }
+            })
         }
     }
 
@@ -98,6 +105,7 @@ class HomeFragment: BaseFragment() {
                 adapter?.addFooter()
                 nextGetURL = data?.next
             }
+            savePlanetsToDB(data?.planets)
         }
     }
 
@@ -112,6 +120,7 @@ class HomeFragment: BaseFragment() {
         if(data?.planets.isNullOrEmpty().not()){
             this.planets?.addAll(data?.planets!!)
             adapter?.addAll(data?.planets!!)
+            savePlanetsToDB(data?.planets)
             if (data?.next.isNullOrEmpty()) {
                 isLastPage = true
                 nextGetURL = null
@@ -169,7 +178,7 @@ class HomeFragment: BaseFragment() {
 
     fun getPlanetListForNextPage(){
         if (CommonUtils.isNetworkAvailable(requireContext())){
-            mViewModel.getPlanetListForNextPage(nextGetURL).observe(viewLifecycleOwner, Observer {
+            homeViewModel.getPlanetListForNextPage(nextGetURL).observe(viewLifecycleOwner, Observer {
                 when(it.status){
                     Status.SUCCESS -> {
                         handleSuccessForSecondPage(it.data)
@@ -182,6 +191,12 @@ class HomeFragment: BaseFragment() {
         }else{
             getString(R.string.no_internet).showToast(requireContext())
         }
+    }
+
+    fun savePlanetsToDB(planets: List<Planet>?) {
+        homeViewModel.savePlanetsToDB(planets).observe(viewLifecycleOwner, Observer {
+            Log.d("DP","data saved")
+        })
     }
 
 

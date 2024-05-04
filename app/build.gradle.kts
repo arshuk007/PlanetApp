@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 
@@ -69,13 +70,13 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.android)
     testImplementation(libs.mockito.kotlin)
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation(libs.androidx.runner)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
@@ -90,6 +91,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.adapter.rxjava)
     implementation(libs.androidx.room.runtime)
+    kapt ("androidx.room:room-compiler:2.2.5")
 
 
 }

@@ -2,6 +2,7 @@ package com.myapp.planetapp.di
 
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.test.planetapp.db.PlanetAppDB
 import com.test.planetapp.network.ApiInterface
 import com.test.planetapp.network.ResponseHandler
 import com.test.planetapp.repository.HomeRepository
@@ -27,12 +28,16 @@ val appModule  = module{
     viewModel {PlanetDetailsViewModel(get())}
 
     //Usecase dependency
-    factory { HomeUsecase(get(), get()) }
+    factory { HomeUsecase(get(), get(), get()) }
     factory { PlanetDetailsUsecase(get(), get()) }
 
     //Repository dependency
     single { HomeRepository(get()) }
     single { PlanetDetailsRepository(get()) }
+
+    //Database dependency
+    single { PlanetAppDB.getDatabase(get()) }
+    single(createdAtStart = false) { get<PlanetAppDB>().planetAppDao() }
 
     //Network dependency
     factory { provideHttpClient(get()) }

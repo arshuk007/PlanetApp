@@ -24,13 +24,13 @@ data class PlanetListResponse(
 
 )
 
-@Entity
+@Entity(tableName = "planet_list")
 @Parcelize
 data class Planet(
 
     @PrimaryKey
     @SerializedName("url")
-    val url: String?,
+    val url: String,
 
     @SerializedName("name")
     val name: String?,
