@@ -67,18 +67,27 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.android)
-    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.google.truth)
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-contrib:3.4.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-intents:3.4.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-accessibility:3.4.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-web:3.4.0")
+    androidTestImplementation ("androidx.fragment:fragment-testing:1.4.0")
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.runner)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    testImplementation ("org.mockito:mockito-core:3.12.4")
+    testImplementation ("org.mockito:mockito-inline:3.12.4")
+    testImplementation ("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+
+    //testImplementation ("org.mockito:mockito-kotlin:4.2.0")
 
     implementation(libs.koin.androidx.viewmodel)
 
@@ -91,7 +100,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.adapter.rxjava)
     implementation(libs.androidx.room.runtime)
-    kapt ("androidx.room:room-compiler:2.2.5")
+    kapt (libs.androidx.room.compiler)
 
 
 }

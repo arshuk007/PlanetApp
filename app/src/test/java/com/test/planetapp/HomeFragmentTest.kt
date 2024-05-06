@@ -1,99 +1,87 @@
 package com.test.planetapp
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+
+import android.content.Context
 import androidx.lifecycle.Observer
-import com.nhaarman.mockitokotlin2.*
-import com.test.planetapp.databinding.FragmentHomeBinding
+import androidx.lifecycle.liveData
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import com.test.planetapp.fragment.HomeFragment
 import com.test.planetapp.model.Planet
 import com.test.planetapp.model.PlanetListResponse
-import com.test.planetapp.utils.showToast
+import com.test.planetapp.network.Resource
+import com.test.planetapp.usecase.HomeUsecase
 import com.test.planetapp.viewmodel.HomeViewModel
-import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 
 class HomeFragmentTest {
 
-    @get:Rule
-    val rule = InstantTaskExecutorRule()
+    private lateinit var fragment: HomeFragment
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var observer: Observer<Resource<PlanetListResponse>>
 
-    @Mock
-    private lateinit var mockViewModel: HomeViewModel
-
-    @Mock
-    private lateinit var mockBinding: FragmentHomeBinding
-
-    @Mock
-    private lateinit var mockObserver: Observer<PlanetListResponse>
-
-    private lateinit var homeFragment: HomeFragment
+    private val planet: Planet = mock()
+    private val context: Context = mock()
+    private val mockUsecase: HomeUsecase = mock()
 
     @Before
-    fun setup() {
-        MockitoAnnotations.initMocks(this)
-        homeFragment = HomeFragment()
-        homeFragment.binding = mockBinding
+    fun setUp() {
+        fragment = HomeFragment()
+        viewModel = HomeViewModel(mockUsecase)
+        observer = mock()
     }
 
     @Test
-    fun `init should call getPlanetDetails`() {
-        homeFragment.init()
-        verify(mockViewModel).getPlanetList()
+    fun testGetPlanetDetails() {
+
+        // Mock response
+        val mockResponse = Resource.success(PlanetListResponse(10, "", "", "", emptyList()))
+        whenever(viewModel.getPlanetList()).thenReturn(liveData { emit(mockResponse) })
+
+        // Invoke method under test
+        fragment.getPlanetDetails()
+
+        // Verify interactions
+        verify(fragment.parentActivity).showLoading()
+        verify(fragment.parentActivity).dismissLoading()
+        verify(fragment.adapter)?.clear()
+        verify(fragment.adapter)?.addAll(mockResponse.data?.planets!!)
+        verify(fragment).savePlanetsToDB(mockResponse.data?.planets!!)
     }
 
     @Test
-    fun `handleSuccessForFirstPage should update adapter with planets`() {
-        val mockData: PlanetListResponse = mock()
-        val mockPlanets: List<Planet> = listOf(mock(), mock())
-        whenever(mockData.planets).thenReturn(mockPlanets)
+    fun testSetAdapter() {
+        // Mock data
+        val mockPlanets = listOf(planet)
 
-        homeFragment.handleSuccessForFirstPage(mockData)
+        // Invoke method under test
+        fragment.setAdapter(mockPlanets)
 
-        verify(homeFragment.adapter)?.clear()
-        verify(homeFragment.adapter)?.addAll(mockPlanets)
+        // Verify adapter is called with the correct data
+        verify(fragment.adapter)?.addAll(mockPlanets)
     }
 
     @Test
-    fun `handleSuccessForFirstPage should set isLastPage to true if data is null or empty`() {
-        homeFragment.handleSuccessForFirstPage(null)
-        assertEquals(true, homeFragment.isLastPage)
+    fun testLoadMoreItems() {
+        // Invoke method under test
+        fragment.loadMoreItems()
 
-        homeFragment.handleSuccessForFirstPage(PlanetListResponse(10, "","","",emptyList()))
-        assertEquals(true, homeFragment.isLastPage)
+        // Verify getPlanetListForNextPage is called
+        verify(fragment).getPlanetListForNextPage()
     }
 
     @Test
-    fun `handleSuccessForFirstPage should set isLastPage to false if data is not empty`() {
-        val mockData: PlanetListResponse = mock()
-        whenever(mockData.planets).thenReturn(listOf(mock()))
+    fun testGetPlanetListForNextPage () {
+        // Mock response
+        val mockResponse = Resource.success(PlanetListResponse(10, "", "", "", emptyList()))
+        whenever(viewModel.getPlanetListForNextPage(fragment.nextGetURL)).thenReturn(liveData { emit(mockResponse) })
 
-        homeFragment.handleSuccessForFirstPage(mockData)
-        assertEquals(false, homeFragment.isLastPage)
+        // Invoke method under test
+        fragment.getPlanetListForNextPage()
+
+        // Verify handleSuccessForSecondPage is called with the correct data
+        verify(fragment).handleSuccessForSecondPage(mockResponse.data)
     }
 
-    @Test
-    fun `handleSuccessForFirstPage should set nextGetURL if data has next`() {
-        val mockData: PlanetListResponse = mock()
-        whenever(mockData.planets).thenReturn(listOf(mock()))
-        whenever(mockData.next).thenReturn("nextURL")
-
-        homeFragment.handleSuccessForFirstPage(mockData)
-        assertEquals("nextURL", homeFragment.nextGetURL)
-    }
-
-    @Test
-    fun `handleFail should show toast message`() {
-        val mockMessage = "Error message"
-        homeFragment.handleFail(mockMessage)
-        verify(mockMessage).showToast(any())
-    }
-
-    @Test
-    fun `loadMoreItems should call getPlanetListForNextPage`() {
-        homeFragment.loadMoreItems()
-        verify(mockViewModel).getPlanetListForNextPage(anyOrNull())
-    }
 }
