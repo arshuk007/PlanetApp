@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">PlanetApp</string>
+    <string name="no_internet">You are offline.</string>
+    <string name="name">Name</string>
+    <string name="rotation_period">Rotation Period</string>
+    <string name="orbital_period">Orbital Period</string>
+    <string name="diameter">Diameter</string>
+    <string name="population">Population</string>
+    <string name="terrain">Terrain</string>
+    <string name="residents">Residents</string>
+    <string name="films">Films</string>
+</resources>
